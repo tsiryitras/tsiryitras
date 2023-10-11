@@ -2,6 +2,9 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 
+/**
+ *  configuration du options services qu rabbitmq
+ */
 const microserviceOptions: MicroserviceOptions = {
   transport: Transport.RMQ,
   options: {
