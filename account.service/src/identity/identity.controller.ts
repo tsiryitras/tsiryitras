@@ -9,9 +9,9 @@ export class IdentityController {
   /**
    * helloFromAPi : Message pattern du Gateway
    */
-  @MessagePattern('helloFromAPi')
-  hello(req) {
-    console.log(req);
-    return this.identityService.hello(req);
+  @MessagePattern('message_to_microservice')
+  msgFromGateway(req) {
+    console.log('Le message du Gateway: ' + req);
+    return this.identityService.messageFromGateway(req);
   }
 }

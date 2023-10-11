@@ -4,7 +4,7 @@ import { Injectable } from '@nestjs/common';
 export class IdentityService {
   constructor() {}
 
-  async hello(message) {
+  async messageFromGateway(message) {
     return message;
   }
 }

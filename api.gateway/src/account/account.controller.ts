@@ -5,8 +5,8 @@ import { AccountService } from './account.service';
 export class AccountController {
   constructor(private readonly accountService: AccountService) {}
 
-  @Get('hello')
-  getHello(): any {
-    return this.accountService.hello();
+  @Get('message')
+  getMessage(): any {
+    return this.accountService.messageToMicroService();
   }
 }

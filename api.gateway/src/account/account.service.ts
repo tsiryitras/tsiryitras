@@ -15,6 +15,7 @@ export class AccountService {
   constructor() {
     /**
      * Configuration du RabbitMq dans le Gateway
+     * Les messages entre Gateway et microservices
      */
     this.client = ClientProxyFactory.create({
       transport: Transport.RMQ,
@@ -25,11 +26,14 @@ export class AccountService {
     });
   }
 
-  public hello() {
-    /**
-     * helloFromAPi : Message pattern pour envoyer vers les micro services
-     * Hello from API Gateway! : Le message a envoyer
-     */
-    return this.client.send('helloFromAPi', 'Hello from API Gateway!');
+  /**
+   * .send() : envoie une message vers les microservices
+   * helloFromAPi : Message pattern pour envoyer vers les micro services
+   * message : Le message a envoyer
+   */
+  public messageToMicroService() {
+    const message = 'Message a envoyer vers les microservices';
+
+    return this.client.send('message_to_microservice', message);
   }
 }
