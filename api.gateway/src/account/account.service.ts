@@ -7,9 +7,15 @@ import {
 
 @Injectable()
 export class AccountService {
+  /**
+   * Injection du ClientProxy: Le receveur de message
+   */
   private client: ClientProxy;
 
   constructor() {
+    /**
+     * Configuration du RabbitMq dans le Gateway
+     */
     this.client = ClientProxyFactory.create({
       transport: Transport.RMQ,
       options: {
