@@ -3,11 +3,13 @@ import { Model } from 'mongoose';
 import { Identity } from './schemas/identity.schema';
 import { CreateIdentityDto } from './dto/create.identity.dto';
 import { LoginIdentityDto } from './dto/login.identity.dto';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class IdentityService {
   constructor(
     @Inject('IDENTITY_MODEL') private identityModel: Model<Identity>,
+    private jwtService: JwtService,
   ) {}
 
   async messageFromGateway(message) {
@@ -29,6 +31,8 @@ export class IdentityService {
   }
 
   async login(loginIdentityDto: LoginIdentityDto): Promise<any> {
+    console.log('username: ' + loginIdentityDto.userName);
+
     const identity = await this.identityModel.findOne({
       userName: loginIdentityDto.userName,
     });
@@ -39,7 +43,17 @@ export class IdentityService {
       if (!checkedPass) {
         return 'Mot de passe incorrect';
       }
-      return identity;
+      const token = this.jwtService.sign({ id: identity._id });
+      console.log(token);
+
+      const tokenVal = this.jwtService.decode(token);
+
+      console.log(tokenVal);
+
+      return {
+        token: token,
+        userName: identity.userName,
+      };
     }
   }
 

@@ -1,7 +1,8 @@
-import { Controller } from '@nestjs/common';
+import { Controller, UseGuards } from '@nestjs/common';
 import { IdentityService } from './identity.service';
 import { MessagePattern } from '@nestjs/microservices';
 import { Identity } from './schemas/identity.schema';
+import { JwtAuthGuard } from './jwt.auth-guard';
 
 @Controller('identity')
 export class IdentityController {
@@ -49,5 +50,14 @@ export class IdentityController {
   async getById(id): Promise<Identity> {
     const identity = await this.identityService.getById(id);
     return identity;
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @MessagePattern('me')
+  async me(command): Promise<any> {
+    const { id, ...rest } = command;
+    console.log(id, rest);
+
+    return rest;
   }
 }

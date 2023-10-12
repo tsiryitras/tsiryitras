@@ -29,8 +29,12 @@ export class AccountController {
 
   @Get('getall')
   async getAll(): Promise<any> {
-    const identity = await this.accountService.getAll();
-    return identity;
+    try {
+      const identity = await this.accountService.getAll();
+      return identity;
+    } catch (error) {
+      throw error;
+    }
   }
 
   @Get(':id')

@@ -1,4 +1,9 @@
-import { Injectable } from '@nestjs/common';
+import {
+  BadGatewayException,
+  Injectable,
+  HttpException,
+  HttpStatus,
+} from '@nestjs/common';
 import {
   ClientProxy,
   ClientProxyFactory,
@@ -56,7 +61,11 @@ export class AccountService {
    * @returns identité
    */
   public login(command) {
-    return this.client.send('login', command);
+    try {
+      return this.client.send('login', command).subscribe();
+    } catch (error) {
+      throw new BadGatewayException();
+    }
   }
 
   /**
@@ -64,8 +73,15 @@ export class AccountService {
    * @returns identités
    */
   async getAll() {
-    const result = this.client.send('getallidentity', '');
-    return result;
+    try {
+      const result = await this.client.send('getallidentity', '');
+      return result;
+    } catch (error) {
+      throw new HttpException(
+        'Server microservice not found',
+        HttpStatus.SERVICE_UNAVAILABLE,
+      );
+    }
   }
 
   /**
