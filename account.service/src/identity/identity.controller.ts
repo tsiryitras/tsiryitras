@@ -1,6 +1,7 @@
 import { Controller } from '@nestjs/common';
 import { IdentityService } from './identity.service';
 import { MessagePattern } from '@nestjs/microservices';
+import { Identity } from './schemas/identity.schema';
 
 @Controller('identity')
 export class IdentityController {
@@ -13,5 +14,40 @@ export class IdentityController {
   msgFromGateway(req) {
     console.log('Le message du Gateway: ' + req);
     return this.identityService.messageFromGateway(req);
+  }
+
+  /**
+   * helloFromAPi : Message pattern du Gateway
+   */
+  @MessagePattern('message_from_microservice')
+  msgToGateway(req) {
+    console.log('Le message de microservice: ' + req);
+    return this.identityService.messageToGateway(req);
+  }
+
+  @MessagePattern('register')
+  async signUp(command): Promise<any> {
+    console.log(command);
+
+    return this.identityService.register(command);
+  }
+
+  @MessagePattern('login')
+  async signIn(command): Promise<any> {
+    console.log(command);
+
+    return this.identityService.login(command);
+  }
+
+  @MessagePattern('getallidentity')
+  async getAll(): Promise<Identity[]> {
+    const identity = await this.identityService.getAll();
+    return identity;
+  }
+
+  @MessagePattern('getidentitybyid')
+  async getById(id): Promise<Identity> {
+    const identity = await this.identityService.getById(id);
+    return identity;
   }
 }

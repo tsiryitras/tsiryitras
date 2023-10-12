@@ -36,4 +36,46 @@ export class AccountService {
 
     return this.client.send('message_to_microservice', message);
   }
+
+  public messageFromMicroService(message) {
+    return this.client.emit('message_from_microservice', message);
+  }
+
+  /**
+   * Enregistrer les identité dans la BD
+   * @param command
+   * @returns identité
+   */
+  public register(command) {
+    return this.client.send('register', command);
+  }
+
+  /**
+   * Faire une Login des identités
+   * @param command
+   * @returns identité
+   */
+  public login(command) {
+    return this.client.send('login', command);
+  }
+
+  /**
+   *  Récupérer tous les identités
+   * @returns identités
+   */
+  async getAll() {
+    const result = this.client.send('getallidentity', '');
+    return result;
+  }
+
+  /**
+   * Récupérer une identités avec un Id
+   * @param id
+   * @returns identité
+   */
+  async getById(id: string) {
+    const res = this.client.send('getidentitybyid', id);
+
+    return res;
+  }
 }
